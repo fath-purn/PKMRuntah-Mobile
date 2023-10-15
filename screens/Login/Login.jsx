@@ -8,7 +8,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
-  Modal,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
@@ -50,8 +49,8 @@ export default GetStarted = ({ navigation }) => {
     >
       {/* Notification error login */}
       {modalVisible && (
-        <View className="flex items-center justify-center top-[10%] z-50 ">
-          <View className="flex items-center justify-center h-[60px]  w-[80%] absolute bg-[#FFFFFFCC] rounded-full">
+        <View className="flex items-center justify-center top-20 relative z-50 ">
+          <View className=" h-[60px]  w-[80%] absolute bg-[#FFFFFFCC] rounded-full">
             <View className="flex flex-row justify-evenly items-center w-full h-full">
               <Text className=" text-[#40513B] text-[16px] leading-[20px] font-Quicksand_Bold">
                 Login Anda Gagal
