@@ -16,7 +16,10 @@ const loadFonts = async () => {
 import Navigate from "./navigate/Navigate";
 
 export default App = () => {
-  loadFonts();
+  
+  useEffect(() => {
+    loadFonts();
+  } , []);
 
   return (
     <SafeAreaProvider>

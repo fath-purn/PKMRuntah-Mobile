@@ -1,19 +1,33 @@
-import { View, Image } from "react-native";
+import React from 'react';
+import { Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 // image
-import IconQR from "../assets/IconQRCode.png";
+import IconQR from '../assets/IconQRCode.png';
 
-export default IconQRCode = ({ navigation }) => {
-    return (
-        <View
-            className="w-[80px] h-[80px] rounded-full bg-[#40513B] flex items-center justify-center"
-            style={{
-            position: "absolute",
-            bottom: 20,
-            right: 20,
-            }}
-        >
-            <Image source={IconQR} />
-        </View>
-    )
+export default IconQRCode = () => {
+  const navigation = useNavigation();
+
+  const handleScanScreen = () => {
+    navigation.navigate('ScanScreen');
+  };
+
+  return (
+    <TouchableOpacity
+      style={{
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        backgroundColor: '#40513B',
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      onPress={handleScanScreen}
+    >
+      <Image source={IconQR} />
+    </TouchableOpacity>
+  );
 }

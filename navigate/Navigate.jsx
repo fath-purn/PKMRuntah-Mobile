@@ -1,45 +1,75 @@
 // Tabs.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, ActivityIndicator } from "react-native";
+import { View, Image, TouchableOpacity, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useIsFocused } from "@react-navigation/native";
 
+// image
+import Logo from "../assets/logo.png";
+
 // import from screens
-// Get Started
-import GetStarted from "../screens/GetStarted/GetStarted";
 import GetStartedClick from "../screens/GetStarted/GetStartedClick";
 
-// Login
+// Login and Register
 import Login from "../screens/Login/LoginScreen";
 import RegisterScreen from "../screens/Register/RegisterScreen";
+
+// Home
 import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import CobaCoba from "../screens/CobaCoba";
 
+// Scan
+import ScanScreen from "../screens/Scan/ScanScreen";
+import ScanSuccesScreen from "../screens/Scan/ScanSuccesScreen";
+import ListTrashScreen from "../screens/ListTrash/ListTrashScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default Navigate = () => {
   const isFocused = useIsFocused();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Perform any side effects based on the focus change
-    // This will only run when the focus changes
-    // Add any necessary logic here
+    setIsLoading(true);
   }, [isFocused]);
+
+  // tampilkan get started selamat 2 detik
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 2000);
+
+  // if (isLoading) {
+  //   return (
+  //     <View
+  //       style={{
+  //         flex: 1,
+  //         backgroundColor: "#EDF1D6",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //       }}
+  //     >
+  //       <View className="bg-[#EDF1D6] flex h-screen w-screen items-center justify-center">
+  //         <Image source={Logo} />
+  //       </View>
+  //     </View>
+  //   );
+  // }
 
   return (
     <>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="GetStarted" component={GetStarted} /> */}
-          <Stack.Screen name="GetStartedClick" component={GetStartedClick} />
-          <Stack.Screen name="LoginScreen" component={Login} />
-          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="CobaCoba" component={CobaCoba} />
-        </Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {/* <Stack.Screen name="GetStartedClick" component={GetStartedClick} />
+        <Stack.Screen name="LoginScreen" component={Login} />
+        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="ScanScreen" component={ScanScreen} />
+        <Stack.Screen name="ScanSuccesScreen" component={ScanSuccesScreen} /> */}
+        <Stack.Screen name="ListTrashScreen" component={ListTrashScreen} />
+        <Stack.Screen name="CobaCoba" component={CobaCoba} />
+      </Stack.Navigator>
       {/* {userToken && isFocused ? (
         <Tab.Navigator
           screenOptions={({ route }) => ({
