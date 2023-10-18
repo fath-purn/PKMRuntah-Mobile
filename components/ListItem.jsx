@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 
 export default ListItem = () => {
   return (
-    <View className="bg-white rounded-md p-6 mb-3">
+    <View className="bg-white rounded-md p-6 my-2">
       <Text className="text-[#40513B] text-[20px] leading-[25px] font-Quicksand_Bold ">
         Botol Aqua
       </Text>

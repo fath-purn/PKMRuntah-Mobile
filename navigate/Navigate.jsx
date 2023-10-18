@@ -61,12 +61,12 @@ export default Navigate = () => {
   return (
     <>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="GetStartedClick" component={GetStartedClick} />
+        <Stack.Screen name="GetStartedClick" component={GetStartedClick} />
         <Stack.Screen name="LoginScreen" component={Login} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="ScanScreen" component={ScanScreen} />
-        <Stack.Screen name="ScanSuccesScreen" component={ScanSuccesScreen} /> */}
+        <Stack.Screen name="ScanSuccesScreen" component={ScanSuccesScreen} />
         <Stack.Screen name="ListTrashScreen" component={ListTrashScreen} />
         <Stack.Screen name="CobaCoba" component={CobaCoba} />
       </Stack.Navigator>

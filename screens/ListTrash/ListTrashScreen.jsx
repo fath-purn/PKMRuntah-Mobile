@@ -18,6 +18,8 @@ import ButtonListTrash from "../../components/ButtonListTrash";
 
 export default ListTrashScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
+  const points = 1000000; // example points value
+  const fontSize = points.toString().length >= 6 ? 32 : 48; // set font size based on points value
 
   return (
     <SafeAreaView
@@ -45,8 +47,8 @@ export default ListTrashScreen = ({ navigation }) => {
             </View>
           </View>
           {/* List Scroll */}
-          <ScrollView className="h-[80%]">
-            <View className="flex items-center mt-6">
+          <ScrollView className="h-[57%] top-4">
+            <View className="flex items-center">
               <View className="w-[90%]">
                 <ListItem />
                 <ListItem />
@@ -77,8 +79,8 @@ export default ListTrashScreen = ({ navigation }) => {
               <View className="w-[30%]">
                 <Image source={LogoCircle} />
               </View>
-              <Text className="text-[#EDF1D6] text-[48px] leading-[60px] font-Quicksand_Bold">
-                10000 {""}
+              <Text style={{ fontSize: fontSize }} className="text-[#EDF1D6] leading-[60px] font-Quicksand_Bold">
+                {points} {""}
                 <Text className="text-[#EDF1D6] text-[20px] font-Quicksand_Bold">
                   Point
                 </Text>

@@ -36,7 +36,7 @@ export default GetStarted = ({navigation}) => {
           Transform waste into change with our app. Scan, deposit, and build a
           cleaner future!
         </Text>
-        <View className="w-[80%] mt-20">
+        <View className="w-[80%] mt-[10%]"> 
           <ButtonSumbit 
             linkNavigation={"LoginScreen"}
             title={"let's Start Now"}

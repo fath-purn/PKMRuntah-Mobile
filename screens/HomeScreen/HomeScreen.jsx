@@ -62,7 +62,7 @@ export default HomeScreen = ({ navigation }) => {
                 />
               </View>
 
-              {/* Content article */}
+              {/* Content article */} 
               <ArticleCarousel />
 
               {/* Promo */}
