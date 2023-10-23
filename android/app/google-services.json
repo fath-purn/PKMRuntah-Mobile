@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "758433274854",
+    "project_id": "pkmruntah",
+    "storage_bucket": "pkmruntah.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758433274854:android:7908d536a5ce137f2f1427",
+        "android_client_info": {
+          "package_name": "com.fathpurn.PKMRuntah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "758433274854-jkbiibi11oli90d2309gje41th9vbaeb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAObn_DwJG-HfN7kwFk9F-ZJn8KFPzX8JA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "758433274854-jkbiibi11oli90d2309gje41th9vbaeb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "758433274854-p9jqvm4gbfsg469ga5erulb5b3ks506j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fathpurn.Runtah"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

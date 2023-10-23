@@ -30,7 +30,7 @@ export default Navigate = () => {
   return (
     <>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="GetStarted" component={GetStarted} /> */}
+          <Stack.Screen name="GetStarted" component={GetStarted} />
           <Stack.Screen name="GetStartedClick" component={GetStartedClick} />
           <Stack.Screen name="LoginScreen" component={Login} />
         </Stack.Navigator>
