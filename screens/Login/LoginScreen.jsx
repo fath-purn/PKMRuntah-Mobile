@@ -32,7 +32,7 @@ export default GetStarted = ({ navigation }) => {
     if (email === "" || password === "") {
       setModalVisible(true);
     } else {
-      navigation.navigate("Home");
+      navigation.navigate("HomeScreen");
     }
   };
 
@@ -142,7 +142,7 @@ export default GetStarted = ({ navigation }) => {
                 <Text className="text-[#609966] text-[12px] leading-[15.5px] font-Quicksand_Bold">
                   Belum punya akun?
                 </Text>
-                <Link to="/Register">
+                <Link to="/RegisterScreen">
                   <Text className="text-[#40513B] text-[12px] leading-[15.5px] font-Quicksand_Bold ml-2">
                     Daftar
                   </Text>
