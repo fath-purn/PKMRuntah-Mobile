@@ -12,7 +12,13 @@ import GetStarted from "../screens/GetStarted/GetStarted";
 import GetStartedClick from "../screens/GetStarted/GetStartedClick";
 
 // Login
-import Login from "../screens/Login/Login";
+import Login from "../screens/Login/LoginScreen";
+import RegisterScreen from "../screens/Register/RegisterScreen";
+import HomeScreen from "../screens/HomeScreen/HomeScreen";
+import CobaCoba from "../screens/CobaCoba";
+import ScanScreen from "../screens/Scanner/ScanScreen";
+import ScanSuccesScren from "../screens/Scanner/ScanSuccesScren";
+import ListTrashScreen from "../screens/ListTrash/ListTrashScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -33,6 +39,12 @@ export default Navigate = () => {
           <Stack.Screen name="GetStarted" component={GetStarted} />
           <Stack.Screen name="GetStartedClick" component={GetStartedClick} />
           <Stack.Screen name="LoginScreen" component={Login} />
+          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="ScanScreen" component={ScanScreen} />
+          <Stack.Screen name="ScanSuccesScren" component={ScanSuccesScren} />
+          <Stack.Screen name="ListTrashScreen" component={ListTrashScreen} />
+          <Stack.Screen name="CobaCoba" component={CobaCoba} />
         </Stack.Navigator>
       {/* {userToken && isFocused ? (
         <Tab.Navigator

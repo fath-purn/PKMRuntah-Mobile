@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // image
 import IconBack from "../../assets/IconBack.png";
-import google from "../../assets/google.png";
+import imageGoogle from "../../assets/google.png";
 import facebook from "../../assets/facebook.png";
 import twitter from "../../assets/twitter.png";
 
@@ -49,7 +49,7 @@ export default RegisterScreen = ({ navigation }) => {
               onPress={() => navigation.navigate("")}
             >
               <View className="w-[20%] mx-2">
-                <Image source={google} />
+                <Image source={imageGoogle} />
               </View>
               <Text className="text-[28px] w-[80%] font-Quicksand_SemiBold text-[#193311] leading-[35px]">
                 Google
