@@ -2,17 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Font from "expo-font";
-// import * as Google from "expo-auth-session/providers/google";
-// import * as WebBrowser from "expo-web-browser";
-// import {
-//   GoogleAuthProvider,
-//   signInWithCredential,
-//   onAuthStateChanged,
-// } from "firebase/auth";
-// import { auth } from "./firebase/firebaseConfig";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// WebBrowser.maybeCompleteAuthSession();
 
 const loadFonts = async () => {
   await Font.loadAsync({
@@ -29,13 +19,12 @@ import Navigate from "./navigate/Navigate";
 export default App = () => {
   loadFonts();
 
-  // const [userInfo, setUserInfo] = useState(null);
-  // const [request, response, promptAsync] = Google.useAuthRequest({});
+  
 
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Navigate />
+        <Navigate promptAsync={promptAsync} />
       </NavigationContainer>
     </SafeAreaProvider>
   );

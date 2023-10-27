@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -5,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // image
 import IconBack from "../../assets/IconBack.png";
@@ -46,35 +46,13 @@ export default RegisterScreen = ({ navigation }) => {
           <View className="w-[80%] flex items-center rounded-2xl mt-14 bg-white py-5">
             <TouchableOpacity
               className="flex flex-row items-center my-5 w-[80%]"
-              onPress={() => navigation.navigate("")}
+              onPress={() => ''}
             >
               <View className="w-[20%] mx-2">
                 <Image source={imageGoogle} />
               </View>
               <Text className="text-[28px] w-[80%] font-Quicksand_SemiBold text-[#193311] leading-[35px]">
                 Google
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="flex flex-row items-center my-5 w-[80%]"
-              onPress={() => navigation.navigate("")}
-            >
-              <View className="w-[20%] mx-2">
-                <Image source={facebook} />
-              </View>
-              <Text className="text-[28px] w-[80%] font-Quicksand_SemiBold text-[#193311] leading-[35px]">
-                Facebook
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="flex flex-row items-center my-5 w-[80%]"
-              onPress={() => navigation.navigate("")}
-            >
-              <View className="w-[20%] mx-2">
-                <Image source={twitter} />
-              </View>
-              <Text className="text-[28px] w-[80%] font-Quicksand_SemiBold text-[#193311] leading-[35px]">
-                Twitter
               </Text>
             </TouchableOpacity>
           </View>
