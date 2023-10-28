@@ -26,7 +26,6 @@
       "googleServicesFile": "./google-services.json",
       "package": "com.fathpurn.PKMRuntah"
     },
-    "androidClientId": "758433274854-qptgd2p2fvjnb9crg26mdau49ofb86qg.apps.googleusercontent.com",
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -37,7 +36,6 @@
       "eas": {
         "projectId": "325cccd6-3a02-406d-aaf9-a83b2b9915cc"
       }
-    },
-    "schema": "PKMRuntah"
+    }
   }
 }
