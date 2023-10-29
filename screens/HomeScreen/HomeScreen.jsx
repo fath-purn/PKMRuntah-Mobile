@@ -44,7 +44,7 @@ export default HomeScreen = ({ navigation }) => {
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === "ios" ? "padding" : "position"} // Menghapus behavior pada Android
-          keyboardVerticalOffset={Platform.OS === "ios" ? 100 : -130} // Mengatur offset berdasarkan platform
+          keyboardVerticalOffset={Platform.OS === "ios" ? -300 : -300} // Mengatur offset berdasarkan platform
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View className="h-full w-screen bg-[#EDF1D6]">
