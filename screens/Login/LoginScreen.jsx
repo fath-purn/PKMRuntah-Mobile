@@ -12,6 +12,9 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
 import { Link } from "@react-navigation/native";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/firebaseConfig";
+import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // image
 import LoginScreenImage from "../../assets/LoginScreenImage.png";
@@ -19,20 +22,39 @@ import IconEmail from "../../assets/IconEmail.png";
 import IconPassword from "../../assets/IconPassword.png";
 import ORLoginScreen from "../../assets/ORLoginScreen.png";
 import IconLoginPengelolaSampah from "../../assets/IconLoginPengelolaSampah.png";
-import IconError from "../../assets/IconError.png";
+import ErrorNotification from "../../components/ErrorNotification";
 
-export default GetStarted = ({ navigation }) => {
+export default LoginScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [securePassword, setSecurePassword] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [messageError, setMessageError] = useState("Register Anda Gagal");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Handler Login
-  const handlerLogin = () => {
+  const handlerLogin = async () => {
     if (email === "" || password === "") {
       setModalVisible(true);
     } else {
-      navigation.navigate("HomeScreen");
+      try {
+        setIsLoading(true);
+        setModalVisible(false);
+        const { user } = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const idToken = await user.getIdToken();
+        // localStorage.setItem("token", idToken);
+        navigation.navigate("HomeScreen");
+        setIsLoading(false);
+      } catch (error) {
+        setModalVisible(true);
+        setMessageError(error.message.split(" ").slice(1).join(" "));
+        setIsLoading(false);
+      }
     }
   };
 
@@ -48,18 +70,7 @@ export default GetStarted = ({ navigation }) => {
       className="flex-[1]"
     >
       {/* Notification error login */}
-      {modalVisible && (
-        <View className="flex items-center justify-center top-20 relative z-50 ">
-          <View className=" h-[60px]  w-[80%] absolute bg-[#FFFFFFCC] rounded-full">
-            <View className="flex flex-row justify-evenly items-center w-full h-full">
-              <Text className=" text-[#40513B] text-[16px] leading-[20px] font-Quicksand_Bold">
-                Login Anda Gagal
-              </Text>
-              <Image source={IconError} />
-            </View>
-          </View>
-        </View>
-      )}
+      {modalVisible && <ErrorNotification messageError={messageError} />}
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "position"} // Menghapus behavior pada Android
@@ -86,20 +97,37 @@ export default GetStarted = ({ navigation }) => {
                   } // Mengubah warna placeholder
                   onChangeText={(text) => setEmail(text)}
                   value={email}
+                  editable={!isLoading}
                 />
               </View>
               <View className="flex flex-row items-center gap-3 ">
                 <Image source={IconPassword} className="bottom-[5px]" />
-                <TextInput
-                  placeholder="Password"
+                <View
                   className={
                     modalVisible
-                      ? "mb-4 divide-y-4 w-[85%] divide-slate-400/25 border-b-[1px] h-12 border-[#C62525]"
-                      : "mb-4 divide-y-4 w-[85%] divide-slate-400/25 border-b-[1px] h-12 border-[#9DC08B]"
+                      ? "flex flex-row justify-between items-center mb-4  w-[85%] border-b-[1px] h-12 border-[#C62525]"
+                      : "flex flex-row justify-between items-center mb-4 w-[85%] border-b-[1px] h-12 border-[#9DC08B]"
                   }
-                  onChangeText={(text) => setPassword(text)}
-                  value={password}
-                />
+                >
+                  <TextInput
+                    placeholder="Password"
+                    className="w-[88%]"
+                    onChangeText={(text) => setPassword(text)}
+                    value={password}
+                    secureTextEntry={securePassword}
+                    editable={!isLoading}
+                  />
+                  <TouchableOpacity
+                    className="border-none"
+                    onPress={() => setSecurePassword(!securePassword)}
+                  >
+                    <Ionicons
+                      name={securePassword ? "eye-off" : "eye"}
+                      size={30}
+                      color="#9DC08B"
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
 
@@ -113,9 +141,10 @@ export default GetStarted = ({ navigation }) => {
               <TouchableOpacity
                 className="flex items-center justify-center h-[50px] rounded-full font-sans bg-[#40513B]"
                 onPress={() => handlerLogin()}
+                disabled={isLoading}
               >
                 <Text className="text-[#EDF1D6] text-[18px] leading-[22.5px] font-Quicksand_Bold">
-                  Login
+                  {isLoading ? "Loading..." : "Login"}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -125,7 +154,7 @@ export default GetStarted = ({ navigation }) => {
             <View className="w-[80%]">
               <TouchableOpacity
                 className="flex items-center justify-center h-[50px] rounded-full font-sans bg-[#FFFFFF]"
-                onPress={() => setModalVisible(false)}
+                onPress={() => navigation.navigate("RegisterInputScreen")}
               >
                 <View className="flex flex-row items-center justify-evenly w-full">
                   <Image source={IconLoginPengelolaSampah} />
@@ -142,7 +171,7 @@ export default GetStarted = ({ navigation }) => {
                 <Text className="text-[#609966] text-[12px] leading-[15.5px] font-Quicksand_Bold">
                   Belum punya akun?
                 </Text>
-                <Link to="/RegisterScreen">
+                <Link to="/RegisterWithScreen">
                   <Text className="text-[#40513B] text-[12px] leading-[15.5px] font-Quicksand_Bold ml-2">
                     Daftar
                   </Text>

@@ -38,9 +38,8 @@ export default GetStarted = ({navigation}) => {
         </Text>
         <View className="w-[80%]">
           <ButtonSumbit 
-            linkNavigation={"CobaCoba"}
+            linkNavigation={"LoginScreen"}
             title={"let's Start Now"}
-            navigation={navigation}
           />
         </View>
       </View>

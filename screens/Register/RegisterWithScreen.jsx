@@ -6,6 +6,16 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
+import {
+  GoogleAuthProvider,
+  signInWithCredential,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "../../firebase/firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // image
 import IconBack from "../../assets/IconBack.png";
@@ -13,8 +23,26 @@ import imageGoogle from "../../assets/google.png";
 import facebook from "../../assets/facebook.png";
 import twitter from "../../assets/twitter.png";
 
-export default RegisterScreen = ({ navigation }) => {
+WebBrowser.maybeCompleteAuthSession();
+
+export default RegisterWithScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
+
+  const [userInfo, setUserInfo] = useState(null);
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId:
+      "758433274854-2cnhd8sna5ssvr946iuoapd3rq3bk67o.apps.googleusercontent.com",
+    androidClientId:
+      "758433274854-qptgd2p2fvjnb9crg26mdau49ofb86qg.apps.googleusercontent.com",
+  });
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credential);
+    }
+  }, [response]);
 
   return (
     <SafeAreaView
@@ -46,7 +74,7 @@ export default RegisterScreen = ({ navigation }) => {
           <View className="w-[80%] flex items-center rounded-2xl mt-14 bg-white py-5">
             <TouchableOpacity
               className="flex flex-row items-center my-5 w-[80%]"
-              onPress={() => ''}
+              onPress={() => promptAsync()}
             >
               <View className="w-[20%] mx-2">
                 <Image source={imageGoogle} />

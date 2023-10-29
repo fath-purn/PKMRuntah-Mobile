@@ -15,11 +15,11 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { A } from '@expo/html-elements';
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default RegisterScreen = ({ navigation }) => {
-  const insets = useSafeAreaInsets();
 
   const [userInfo, setUserInfo] = useState(null);
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -38,9 +38,9 @@ export default RegisterScreen = ({ navigation }) => {
   }, [response]);
 
   return (
-    <View>
+    <View className="flex items-center w-screen h-screen justify-center">
       <TouchableOpacity onPress={() => promptAsync()}>
-        <Text style={styles.connexionText}>Connect with Google</Text>
+        <Text>Connect with Google</Text>
       </TouchableOpacity>
     </View>
   );

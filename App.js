@@ -24,7 +24,7 @@ export default App = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Navigate promptAsync={promptAsync} />
+        <Navigate />
       </NavigationContainer>
     </SafeAreaProvider>
   );
