@@ -12,7 +12,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
 import { Link } from "@react-navigation/native";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -41,13 +41,23 @@ export default LoginScreen = ({ navigation }) => {
       try {
         setIsLoading(true);
         setModalVisible(false);
-        const { user } = await createUserWithEmailAndPassword(
+        const { user } = await signInWithEmailAndPassword(
           auth,
           email,
           password
         );
         const idToken = await user.getIdToken();
         // localStorage.setItem("token", idToken);
+
+        // ambil 
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            const uid = user.uid;
+          } else {
+            console.log("User is signed out");
+          }
+        });
+
         navigation.navigate("HomeScreen");
         setIsLoading(false);
       } catch (error) {

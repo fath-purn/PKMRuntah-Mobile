@@ -30,7 +30,7 @@ import ErrorNotification from "../../components/ErrorNotification";
 export default RegisterInputScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const [email, setEmail] = useState("");
-  const [password1, setPassword1] = useState("");
+  const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [securePassword1, setSecurePassword1] = useState(true);
   const [securePassword2, setSecurePassword2] = useState(true);
@@ -43,7 +43,7 @@ export default RegisterInputScreen = ({ navigation }) => {
     if (email === "" || password === "") {
       setModalVisible(true);
     } else {
-      if (password1 !== password2) {
+      if (password !== password2) {
         setMessageError("Password tidak sama");
         setModalVisible(true);
       } else {
@@ -53,7 +53,7 @@ export default RegisterInputScreen = ({ navigation }) => {
           const { user } = await createUserWithEmailAndPassword(
             auth,
             email,
-            password
+            password,
           );
           const idToken = await user.getIdToken();
           // localStorage.setItem("token", idToken);
@@ -124,8 +124,8 @@ export default RegisterInputScreen = ({ navigation }) => {
                     <TextInput
                       placeholder="Password"
                       className="w-[88%]"
-                      onChangeText={(text) => setPassword1(text)}
-                      value={password1}
+                      onChangeText={(text) => setPassword(text)}
+                      value={password}
                       secureTextEntry={securePassword1}
                       editable={!isLoading}
                     />
