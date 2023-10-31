@@ -4,35 +4,105 @@ import {
   View,
   StyleSheet,
   SafeAreaView,
+  PermissionsAndroid,
 } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import axios from "axios";
+import { useQuery } from "react-query";
+import * as Location from "expo-location";
 
 export default ScanScreen = () => {
   const insets = useSafeAreaInsets();
   const navigate = useNavigation();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [displayNameLocation, setDisplayNameLocation] = useState(null);
 
   useEffect(() => {
+    // permissions for camera
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     };
-
     getBarCodeScannerPermissions();
+
+    // permissions for location
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const getLokasiFromAPI = async () => {
+    const response = await axios.get(
+      `https://geocode.maps.co/reverse?lat=${location.coords.latitude}&lon=${location.coords.longitude}`
+    );
+    setDisplayNameLocation(response.data.display_name);
+  };
+
+  getLokasiFromAPI();
+
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
 
-    AsyncStorage.setItem("qrCode", data);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    try {
+      const value = await AsyncStorage.getItem("@data/barcode");
+      const getDate = new Date().toLocaleString();
 
-    navigate.navigate("ScanSuccesScren");
+      if (value !== null) {
+        // Value previously stored
+        let newValue = JSON.parse(value);
+
+        if (Array.isArray(newValue)) {
+          newValue.push({
+            barcode: data,
+            date: getDate,
+            errLocation: errorMsg,
+            location: displayNameLocation,
+          }); // Add date to the object
+        } else {
+          // If the stored value is not an array, create a new array with the value
+          newValue = [
+            {
+              barcode: data,
+              date: getDate,
+              errLocation: errorMsg,
+              location: displayNameLocation,
+            },
+          ]; // Add date to the object
+        }
+
+        await AsyncStorage.setItem("@data/barcode", JSON.stringify(newValue));
+      } else {
+        // If no value is stored, create a new array with the data
+        await AsyncStorage.setItem(
+          "@data/barcode",
+          JSON.stringify([
+            {
+              barcode: data,
+              date: getDate,
+              errLocation: errorMsg,
+              location: displayNameLocation,
+            },
+          ]) // Add date to the object
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    navigate.navigate("ScanSuccessScreen");
   };
 
   if (hasPermission === null) {
@@ -42,10 +112,11 @@ export default ScanScreen = () => {
     return <Text>No access to camera</Text>;
   }
 
+  
+
   return (
     <SafeAreaView
       style={{
-        // Paddings to handle safe area
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
         paddingLeft: insets.left,
@@ -67,4 +138,4 @@ export default ScanScreen = () => {
       </Text>
     </SafeAreaView>
   );
-}
+};

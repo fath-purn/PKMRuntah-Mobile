@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Font from "expo-font";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 
+const queryClient = new QueryClient();
 
 const loadFonts = async () => {
   await Font.loadAsync({
@@ -19,13 +21,13 @@ import Navigate from "./navigate/Navigate";
 export default App = () => {
   loadFonts();
 
-  
-
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <Navigate />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <Navigate />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 };

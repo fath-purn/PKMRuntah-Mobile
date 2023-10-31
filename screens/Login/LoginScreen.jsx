@@ -49,7 +49,7 @@ export default LoginScreen = ({ navigation }) => {
         const idToken = await user.getIdToken();
         // localStorage.setItem("token", idToken);
 
-        // ambil 
+        // ambil
         onAuthStateChanged(auth, (user) => {
           if (user) {
             const uid = user.uid;
@@ -145,7 +145,7 @@ export default LoginScreen = ({ navigation }) => {
             <View className="w-[80%]">
               <View className="flex flex-row justify-end">
                 <Text className="text-[#40513B] text-[10px] mb-4 leading-[12.5px] font-Quicksand_Bold">
-                  Forgot Password?
+                  <Link to="/HomeScreen">Forgot Password?</Link>
                 </Text>
               </View>
               <TouchableOpacity

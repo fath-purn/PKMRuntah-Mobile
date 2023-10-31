@@ -44,7 +44,7 @@ export default Navigate = () => {
           <Stack.Screen name="RegisterWithScreen" component={RegisterWithScreen} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="ScanScreen" component={ScanScreen} />
-          <Stack.Screen name="ScanSuccesScren" component={ScanSuccesScren} />
+          <Stack.Screen name="ScanSuccessScreen" component={ScanSuccesScren} />
           <Stack.Screen name="ListTrashScreen" component={ListTrashScreen} />
           <Stack.Screen name="CobaCoba" component={CobaCoba} />
         </Stack.Navigator>
