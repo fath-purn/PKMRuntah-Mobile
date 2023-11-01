@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Font from "expo-font";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { AuthProvider } from "./Authorize/AuthProvider";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,9 @@ export default App = () => {
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <Navigate />
+          <AuthProvider>
+            <Navigate />
+          </AuthProvider>
         </NavigationContainer>
       </SafeAreaProvider>
     </QueryClientProvider>

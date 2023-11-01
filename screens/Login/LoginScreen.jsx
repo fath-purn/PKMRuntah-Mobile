@@ -10,11 +10,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "@react-navigation/native";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
+
+import { AuthContext } from "../../Authorize/AuthProvider";
 
 // image
 import LoginScreenImage from "../../assets/LoginScreenImage.png";
@@ -25,6 +27,7 @@ import IconLoginPengelolaSampah from "../../assets/IconLoginPengelolaSampah.png"
 import ErrorNotification from "../../components/ErrorNotification";
 
 export default LoginScreen = ({ navigation }) => {
+  const { registerLoginAuth } = useContext(AuthContext);
   const insets = useSafeAreaInsets();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +50,6 @@ export default LoginScreen = ({ navigation }) => {
           password
         );
         const idToken = await user.getIdToken();
-        // localStorage.setItem("token", idToken);
 
         // ambil
         onAuthStateChanged(auth, (user) => {
@@ -58,6 +60,7 @@ export default LoginScreen = ({ navigation }) => {
           }
         });
 
+        registerLoginAuth(idToken);
         navigation.navigate("HomeScreen");
         setIsLoading(false);
       } catch (error) {

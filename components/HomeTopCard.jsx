@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../Authorize/AuthProvider";
 
 // image
 import IconExchange from "../assets/IconExchange.png";
@@ -9,6 +12,7 @@ import RuntahLogo from "../assets/RuntahLogo.png";
 import BackMenuUtama from "../assets/BackMenuUtama.png";
 
 export default HomeTopCard = ({}) => {
+  const { logoutAuth } = useContext(AuthContext);
   const navigation = useNavigation();
 
   const handlePressTop = () => {
@@ -16,7 +20,9 @@ export default HomeTopCard = ({}) => {
   };
 
   const handlePressBottom = () => {
-    navigation.navigate("ScanSuccesScreen");
+    // logout
+    logoutAuth();
+    navigation.navigate("GetStarted");
   };
  
   return (

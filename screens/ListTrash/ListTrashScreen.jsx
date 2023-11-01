@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -29,58 +30,47 @@ export default ListTrashScreen = ({ navigation }) => {
     try {
       const value = await AsyncStorage.getItem("@data/barcode");
       if (value !== null) {
-        const hasil = JSON.parse(value);
+        const barcodeData = JSON.parse(value);
         const results = [];
-
-        for (const item of hasil) {
+  
+        for (const item of barcodeData) {
           const response = await axios.get(
             `https://runtahepr-backend.fly.dev/api/scan/${item.barcode}`
           );
-          if (response.data.result.length === 0) {
-            results.push({
-              status: false,
-              timestamp: item.date,
-              barcode: item.barcode,
-              errLocation: item.errLocation,
-              location: item.location,
-              result: response.data.result,
-            });
-          } else {
-            results.push({
-              status: true,
-              timestamp: item.date,
-              barcode: item.barcode,
-              errLocation: item.errLocation,
-              location: item.location,
-              result: response.data.result[0],
-            });
-          }
+  
+          const { result } = response.data;
+          const data = {
+            status: result.length === 0 ? false : true,
+            timestamp: item.date,
+            barcode: item.barcode,
+            errLocation: item.errLocation,
+            location: item.location,
+            result: result.length === 0 ? result : result[0],
+          };
+  
+          results.push(data);
         }
-
+  
         return results;
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
   };
-
-  const {
-    data: dataBarang,
-    isLoading,
-    isError,
-    error,
-  } = useQuery("barangData", fetchData);
-
-  console.log(dataBarang);
-
+  
+  const { data: dataBarang, isLoading, isError, error } = useQuery(
+    "barangData",
+    fetchData
+  );
+  
   if (isLoading) {
     return (
       <View className="flex items-center justify-center w-screen h-screen">
-        <Text>Loading...</Text>
+        <ActivityIndicator size={80} color="#609966" />
       </View>
     );
   }
-
+  
   if (isError) {
     return (
       <View className="flex items-center justify-center w-screen h-screen">
