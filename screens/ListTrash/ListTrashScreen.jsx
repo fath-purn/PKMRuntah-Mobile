@@ -19,38 +19,49 @@ import LogoCircle from "../../assets/LogoCircle.png";
 
 import ListItem from "../../components/ListItem";
 import ButtonListTrash from "../../components/ButtonListTrash";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export default ListTrashScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const points = 1000000; // example points value
   const fontSize = points.toString().length >= 6 ? 32 : 48; // set font size based on points value
-  const [data, setData] = useState([]);
-  const [dataBarangFull, setDataBarangFull] = useState([]); // data barang dari API
 
-  const getData = async () => {
+  const fetchData = async () => {
     try {
-      // cara hapus data
-      // await AsyncStorage.removeItem("@data/barcode");
       const value = await AsyncStorage.getItem("@data/barcode");
       if (value !== null) {
-        // value previously stored
-        setData(JSON.parse(value));
-      } else {
-        setData(["No data"]);
+        const hasil = JSON.parse(value);
+        const results = [];
+
+        for (const item of hasil) {
+          const response = await axios.get(
+            `https://runtahepr-backend.fly.dev/api/scan/${item.barcode}`
+          );
+          if (response.data.result.length === 0) {
+            results.push({
+              status: false,
+              timestamp: item.date,
+              barcode: item.barcode,
+              errLocation: item.errLocation,
+              location: item.location,
+              result: response.data.result,
+            });
+          } else {
+            results.push({
+              status: true,
+              timestamp: item.date,
+              barcode: item.barcode,
+              errLocation: item.errLocation,
+              location: item.location,
+              result: response.data.result[0],
+            });
+          }
+        }
+
+        return results;
       }
     } catch (e) {
       console.log(e);
     }
-  };
-
-  const fetchData = async () => {
-    getData();
-    const response = await axios.get(
-      `https://runtahepr-backend.fly.dev/api/scan/${8886008101053}`
-    );
-
-    return response.data.result;
   };
 
   const {
@@ -59,24 +70,12 @@ export default ListTrashScreen = ({ navigation }) => {
     isError,
     error,
   } = useQuery("barangData", fetchData);
-  // console.log(dataBarang);
-  // console.log(data);
 
-  // cara memasukkan dataBarang dan data ke dalam dataBarangFull
-  const createDataBarangFull = data.map((item, index) => {
-    return {
-      ...item,
-      barcode: data[index],
-    };
-  });
-
-  console.log(createDataBarangFull);
+  console.log(dataBarang);
 
   if (isLoading) {
     return (
-      <View
-        className="flex items-center justify-center w-screen h-screen"
-      >
+      <View className="flex items-center justify-center w-screen h-screen">
         <Text>Loading...</Text>
       </View>
     );
@@ -84,9 +83,7 @@ export default ListTrashScreen = ({ navigation }) => {
 
   if (isError) {
     return (
-      <View
-        className="flex items-center justify-center w-screen h-screen"
-      >
+      <View className="flex items-center justify-center w-screen h-screen">
         <Text>Error: {error.message}</Text>
       </View>
     );
@@ -112,7 +109,7 @@ export default ListTrashScreen = ({ navigation }) => {
               >
                 <Image source={IconBack} />
               </TouchableOpacity>
-              <Text className="text-[20px] font-Quicksand_Bold leading-[25px]  text-[#40513B]">
+              <Text className="text-[20px] font-Quicksand_Bold leading-[25px] text-[#40513B]">
                 List Trash
               </Text>
             </View>
@@ -121,15 +118,31 @@ export default ListTrashScreen = ({ navigation }) => {
           <ScrollView className="h-[59%] top-4">
             <View className="flex items-center">
               <View className="w-[90%]">
-                {data.map((item, index) => {
-                  return (
-                    <ListItem
-                      key={index}
-                      namaItem={item.barcode}
-                      timestamp={item.date}
-                    />
-                  );
-                })}
+                {dataBarang.length > 0 ? (
+                  dataBarang.map((item, index) => {
+                    return !item.status === false ? (
+                      <ListItem
+                        key={index}
+                        namaItem={item.result.namaItem}
+                        timestamp={item.timestamp}
+                        status={item.status}
+                      />
+                    ) : (
+                      <ListItem
+                        key={index}
+                        namaItem={item.barcode}
+                        timestamp={item.timestamp}
+                        status={item.status}
+                      />
+                    );
+                  })
+                ) : (
+                  <View className="flex items-center justify-center mt-[10%] w-full">
+                    <Text className="text-[18px] font-Quicksand_Bold leading-[25px] text-[#40513B]">
+                      Tidak ada sampah ditemukan
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           </ScrollView>

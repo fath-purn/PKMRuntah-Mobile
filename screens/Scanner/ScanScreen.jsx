@@ -4,7 +4,6 @@ import {
   View,
   StyleSheet,
   SafeAreaView,
-  PermissionsAndroid,
 } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,7 +18,6 @@ export default ScanScreen = () => {
   const navigate = useNavigation();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [displayNameLocation, setDisplayNameLocation] = useState(null);
 
@@ -33,24 +31,21 @@ export default ScanScreen = () => {
 
     // permissions for location
     (async () => {
-      
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
-      
+
       let location = await Location.getLastKnownPositionAsync({});
-      console.log("location", location);
       if (location) {
         const response = await axios.get(
           `https://geocode.maps.co/reverse?lat=${location.coords.latitude}&lon=${location.coords.longitude}`
         );
         setDisplayNameLocation(response.data.display_name);
       } else {
-        setErrorMsg('Something went wrong');
+        setErrorMsg("Something went wrong");
       }
-      
     })();
   }, []);
 
@@ -107,13 +102,23 @@ export default ScanScreen = () => {
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return (
+      <View
+        className="flex items-center justify-center w-screen h-screen"
+      >
+        <Text>Requesting for camera permission</Text>
+      </View>
+    );
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <View
+        className="flex items-center justify-center w-screen h-screen"
+      >
+        <Text>No access to camera</Text>
+      </View>
+    );
   }
-
-  
 
   return (
     <SafeAreaView
