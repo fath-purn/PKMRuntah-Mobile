@@ -19,16 +19,14 @@ import LogoCircle from "../../assets/LogoCircle.png";
 
 import ListItem from "../../components/ListItem";
 import ButtonListTrash from "../../components/ButtonListTrash";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export default ListTrashScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const points = 1000000; // example points value
   const fontSize = points.toString().length >= 6 ? 32 : 48; // set font size based on points value
   const [data, setData] = useState([]);
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const [dataBarangFull, setDataBarangFull] = useState([]); // data barang dari API
 
   const getData = async () => {
     try {
@@ -38,6 +36,8 @@ export default ListTrashScreen = ({ navigation }) => {
       if (value !== null) {
         // value previously stored
         setData(JSON.parse(value));
+      } else {
+        setData(["No data"]);
       }
     } catch (e) {
       console.log(e);
@@ -45,9 +45,11 @@ export default ListTrashScreen = ({ navigation }) => {
   };
 
   const fetchData = async () => {
+    getData();
     const response = await axios.get(
       `https://runtahepr-backend.fly.dev/api/scan/${8886008101053}`
     );
+
     return response.data.result;
   };
 
@@ -57,7 +59,18 @@ export default ListTrashScreen = ({ navigation }) => {
     isError,
     error,
   } = useQuery("barangData", fetchData);
-  console.log(dataBarang);
+  // console.log(dataBarang);
+  // console.log(data);
+
+  // cara memasukkan dataBarang dan data ke dalam dataBarangFull
+  const createDataBarangFull = data.map((item, index) => {
+    return {
+      ...item,
+      barcode: data[index],
+    };
+  });
+
+  console.log(createDataBarangFull);
 
   if (isLoading) {
     return (

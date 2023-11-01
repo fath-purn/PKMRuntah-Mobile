@@ -33,25 +33,26 @@ export default ScanScreen = () => {
 
     // permissions for location
     (async () => {
+      
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
         return;
       }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      
+      let location = await Location.getLastKnownPositionAsync({});
+      console.log("location", location);
+      if (location) {
+        const response = await axios.get(
+          `https://geocode.maps.co/reverse?lat=${location.coords.latitude}&lon=${location.coords.longitude}`
+        );
+        setDisplayNameLocation(response.data.display_name);
+      } else {
+        setErrorMsg('Something went wrong');
+      }
+      
     })();
   }, []);
-
-  const getLokasiFromAPI = async () => {
-    const response = await axios.get(
-      `https://geocode.maps.co/reverse?lat=${location.coords.latitude}&lon=${location.coords.longitude}`
-    );
-    setDisplayNameLocation(response.data.display_name);
-  };
-
-  getLokasiFromAPI();
 
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
